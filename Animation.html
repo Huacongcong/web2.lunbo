@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>大作业</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<script type="text/javascript" src = "animate.js"></script>
+	<div class = "notice">
+		<div class = "note">
+			<img src="images/a15.png">
+			<div id="movep">
+				<p>[温馨提示]最近有不少不法分子在网上骗人，请大家注意!!!</p>
+			</div>
+			
+		</div>
+	</div>
+	<div class = "div" id="box">
+		<div class="tupians">	
+			<div class="tupian"><img src="images/b5.png"></div>
+			<div class="tupian"><img src="images/b1.png"></div>
+			<div class="tupian"><img src="images/b2.png"></div>
+			<div class="tupian"><img src="images/b3.png"></div>
+			<div class="tupian"><img src="images/b4.png"></div>
+			<div class="tupian"><img src="images/b5.png"></div>
+			<div class="tupian"><img src="images/b1.png"></div>
+		</div>
+		<span id="left"><</span>
+		<span id="right">></span>
+		<ul class="nav" id="nav">
+			<li class="active">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		var box = document.getElementById("box");
+		var navlist = document.getElementsByTagName("li");
+		var tupians = document.getElementsByClassName("tupians")[0];
+		var span = document.getElementsByTagName("span");
+		var index = 1;
+		var timer;
+		var p = document.getElementsByTagName('p')[0];
+		//轮播
+		function next(){
+			index++;
+			navChange();
+			animate(tupians,{left:-1200*index},function(){
+				if(index == 6){
+					tupians.style.left = "-1200px";
+					index = 1;
+				}
+			});
+		}
+		function prev(){
+			index--;
+			navChange();
+			animate(tupians,{left:-1200*index},function(){
+				if(index == 0){
+					tupians.style.left = "-6000px";
+					index = 5;
+				}
+			});
+		}
+
+		var timer = setInterval(next,3000);
+		//鼠标变化
+		box.onmouseover = function(){
+			animate(span[0],{opacity:50});
+			animate(span[1],{opacity:50});
+			clearInterval(timer);
+		}
+		box.onmouseout = function(){
+			animate(span[0],{opacity:0});
+			animate(span[1],{opacity:0});
+			timer = setInterval(next,3000);
+		}
+		//点击左右箭头变化
+		span[0].onclick = prev;
+		span[1].onclick = next;
+		//小按钮点击变化
+		for(var i = 0;i < navlist.length;i++){
+			navlist[i].idx = i;
+			navlist[i].onclick = function(){
+				index = this.idx + 1;
+				navChange();
+				animate(tupians,{left:-1200*index});
+			}
+		}
+		//图标变化
+		function navChange(){
+			for(var i = 0;i < navlist.length;i++){
+				navlist[i].className =' ';
+			}
+			if(index == 6){
+				navlist[0].className = 'active';
+			}else if(index == 0){
+				navlist[4].className = 'active';
+			}else{
+				navlist[index - 1].className = 'active';
+			}
+			
+		}
+		//滚动字体
+		window.onload = function moving(){			
+			var timerp = setInterval(function(){
+				now = parseInt(getStyle(p,"left"));
+				if(now == -360){
+					clearInterval(timerp);
+					now = 650;
+					moving();
+				}
+				p.style.left = now - 4 + 'px';
+			},50);				
+		}
+	</script>
+</body>
+</html>
